@@ -1592,8 +1592,10 @@ void OpenGL::init() {
   mouseIsDown=false;
   mouseView=-1;
 
-  if(width%4) width = 4*(width/4);
-  if(height%2) height = 2*(height/2);
+  // if(width%4) width = 4*(width/4);
+  // if(height%2) height = 2*(height/2);
+  width = 1100;
+  height = 1100;
   camera.setWHRatio((double)width/height);
 
   reportEvents=false;

@@ -1503,7 +1503,7 @@ StringA KOMO::getCollisionPairs(double belowMargin){
     if(!p.collision)((Proxy*)&p)->calc_coll();
     double d = p.collision->getDistance();
     if(d<belowMargin){
-//      cout <<"KOMO collision pair: " <<p.a->name <<"--" <<p.b->name <<" : " <<p.d <<endl;
+      cout <<"KOMO collision pair: " <<p.a->name <<"--" <<p.b->name <<" : " <<p.d <<endl;
       uint i=p.a->ID % nFrames;
       uint j=p.b->ID % nFrames;
       if(j<i){ int a=i; i=j; j=a; }

@@ -167,7 +167,6 @@ arr Skeleton::solve(ArgWord sequenceOrPath, int verbose) {
     while(komo->view_play(true));
     komo->view_play(false, .1, "z.vid/");
   }
-
   return komo->getPath_X();
 }
 
@@ -492,21 +491,33 @@ void Skeleton::setKOMO(KOMO& komo) const {
         //        komo.addObjective({s.phase0}, FS_scalarProductYZ, {s.frames(1), s.frames(0)}, OT_eq, {1e2});
         break;
       }
+
       case SY_touchBoxNormalZ: {
-        rai::Frame* box = komo.world.getFrame(s.frames(1));
-        CHECK(box, "");
-        CHECK(box->shape, "");
-        double boxSize = 0.;
-        if(box->shape->type()==rai::ST_ssBox) {
-          boxSize = shapeSize(komo.world, s.frames(1), 2);
-        } else if(box->shape->type()==rai::ST_cylinder) {
-          boxSize = shapeSize(komo.world, s.frames(1), 1);
-        } else HALT("");
-        komo.addObjective({s.phase0}, FS_positionDiff, {s.frames(0), s.frames(1)}, OT_eq, {{1, 3}, {0., 0., 1e2}}, {0, 0, .5*boxSize}); //arr({1,3},{0,0,1e2})
-        komo.addObjective({s.phase0}, FS_scalarProductZZ, {s.frames(1), s.frames(0)}, OT_eq, {1e2}, {1.});
-        //        komo.addObjective({s.phase0}, FS_vectorZDiff, {s.frames(0), s.frames(1)}, OT_eq, {1e2});
+
+        double boxSize = shapeSize(komo.world, s.frames(1), 1);
+
+        // komo.addObjective({s.phase0}, FS_positionDiff, {s.frames(0), s.frames(1)}, OT_eq, {{1, 3}, {1e2, .0, .0}}, {.5*boxSize, 0., 0.});
+        komo.addObjective({s.phase0}, FS_positionDiff, {s.frames(0), s.frames(1)}, OT_eq, {{1, 3}, {1e1, .0, .0}}, {0, 0., 0.});        
+        komo.addObjective({s.phase0}, FS_vectorXDiff, {s.frames(0), s.frames(1)}, OT_eq, {1e1}, {0});     
+        komo.addObjective({s.phase0}, FS_vectorZDiff, {s.frames(0), s.frames(1)}, OT_eq, {1e1}, {0});
+        
         break;
       }
+      // case SY_touchBoxNormalZ: {
+      //   rai::Frame* box = komo.world.getFrame(s.frames(1));
+      //   CHECK(box, "");
+      //   CHECK(box->shape, "");
+      //   double boxSize = 0.;
+      //   if(box->shape->type()==rai::ST_ssBox) {
+      //     boxSize = shapeSize(komo.world, s.frames(1), 2);
+      //   } else if(box->shape->type()==rai::ST_cylinder) {
+      //     boxSize = shapeSize(komo.world, s.frames(1), 1);
+      //   } else HALT("");
+      //   komo.addObjective({s.phase0}, FS_positionDiff, {s.frames(0), s.frames(1)}, OT_eq, {{1, 3}, {0., 0., 1e2}}, {0, 0, .5*boxSize}); //arr({1,3},{0,0,1e2})
+      //   komo.addObjective({s.phase0}, FS_scalarProductZZ, {s.frames(1), s.frames(0)}, OT_eq, {1e2}, {1.});
+      //   //        komo.addObjective({s.phase0}, FS_vectorZDiff, {s.frames(0), s.frames(1)}, OT_eq, {1e2});
+      //   break;
+      // }
 
       case SY_boxGraspX: {
             rai::Frame* box = komo.world.getFrame(s.frames(1));
