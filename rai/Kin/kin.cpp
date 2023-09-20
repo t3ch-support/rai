@@ -1520,6 +1520,12 @@ void Configuration::jacobian_pos(arr& J, Frame* a, const Vector& pos_world) cons
       uint j_idx=j->qIndex;
       if(j_idx>=N) if(j->active) CHECK_EQ(j->type, JT_rigid, "");
       if(j_idx<N) {
+        if (j->type == JT_transXYZ) {
+          // Assuming JT_transXYZ has 3 DoF, one for each axis
+          J.elem(0, j_idx) += j->scale * 1.0;   // Update for X-axis
+          J.elem(1, j_idx + 1) += j->scale * 1.0; // Update for Y-axis
+          J.elem(2, j_idx + 2) += j->scale * 1.0; // Update for Z-axis
+        }
         if(j->type==JT_hingeX || j->type==JT_hingeY || j->type==JT_hingeZ) {
           Vector tmp = j->axis ^ (pos_world-j->X()*j->Q().pos);
           tmp *= j->scale;

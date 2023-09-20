@@ -210,6 +210,11 @@ void F_qZeroVel::phi2(arr& y, arr& J, const FrameL& F){
     y = s%y;
     //if(!!J) J = s%J;
   }
+  if(f->joint->type==rai::JT_transXYZ) {
+    arr s = ARR(10., 10., 10.);
+    y = s%y;
+    //if(!!J) J = s%J;
+  }
 #endif
   if(!!J) J = y.J_reset();
 }

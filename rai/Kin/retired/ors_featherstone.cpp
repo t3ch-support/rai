@@ -252,6 +252,15 @@ void rai::Link::setFeatherstones() {
     case JT_transX: _h.resize(6); _h.setZero(); _h(3)=1.; break;
     case JT_transY: _h.resize(6); _h.setZero(); _h(4)=1.; break;
     case JT_transZ: _h.resize(6); _h.setZero(); _h(5)=1.; break;
+    // Adding new case for JT_transXYZ
+    case JT_transXYZ:
+      // Assuming JT_transXYZ has 3 DOF, one for each axis
+      _h.resize(6, 3); // 6 spatial coordinates, 3 DOF
+      _h.setZero();
+      _h(3, 0) = 1.; // DOF for X-axis
+      _h(4, 1) = 1.; // DOF for Y-axis
+      _h(5, 2) = 1.; // DOF for Z-axis
+      break;
     default: NIY;
   }
   Featherstone::RBmci(_I, mass, com.p(), inertia);

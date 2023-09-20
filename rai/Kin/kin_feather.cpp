@@ -253,6 +253,7 @@ void F_Link::setFeatherstones() {
     case rai::JT_transX: _h.resize(6).setZero(); _h(3)=1.; break;
     case rai::JT_transY: _h.resize(6).setZero(); _h(4)=1.; break;
     case rai::JT_transZ: _h.resize(6).setZero(); _h(5)=1.; break;
+    case rai::JT_transXYZ: _h.resize(6).setZero(); _h(3)=1.; _h(4)=1.; _h(5)=1.; break;
     default: NIY;
   }
   Featherstone::RBmci(_I, mass, com.p(), inertia);

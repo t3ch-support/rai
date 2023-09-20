@@ -491,6 +491,13 @@ void Skeleton::setKOMO(KOMO& komo) const {
         //        komo.addObjective({s.phase0}, FS_scalarProductYZ, {s.frames(1), s.frames(0)}, OT_eq, {1e2});
         break;
       }
+      case SY_alignXZ: {
+     
+        komo.addObjective({s.phase0}, FS_vectorXDiff, {s.frames(0), s.frames(1)}, OT_eq, {1e1}, {0});     
+        komo.addObjective({s.phase0}, FS_vectorZDiff, {s.frames(0), s.frames(1)}, OT_eq, {1e1}, {0});
+        
+        break;
+      }
 
       case SY_touchBoxNormalZ: {
 
@@ -503,6 +510,18 @@ void Skeleton::setKOMO(KOMO& komo) const {
         
         break;
       }
+      case SY_pointPos: {
+
+        komo.addObjective({s.phase0, s.phase1}, FS_poseDiff, s.frames, OT_eq, {1e1});   
+        
+        break;
+      }
+      
+      case SY_loopTree: {
+        komo.addObjective({s.phase0}, FS_poseDiff, s.frames, OT_eq, {1e1});   
+        break;
+      }
+
       // case SY_touchBoxNormalZ: {
       //   rai::Frame* box = komo.world.getFrame(s.frames(1));
       //   CHECK(box, "");

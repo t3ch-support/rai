@@ -40,6 +40,12 @@ enum SkeletonSymbol {
   SY_stableYPhi,
 
   SY_end,
+
+  SY_pointPos,
+
+  SY_alignXZ,
+  
+  SY_loopTree
 };
 
 } //namespace

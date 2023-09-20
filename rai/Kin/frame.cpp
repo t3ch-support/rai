@@ -802,6 +802,10 @@ void rai::Joint::setDofs(const arr& q_full, uint _qIndex) {
         Q.pos.set(qp[0], qp[1], 0.);
       } break;
 
+      case JT_transXYZ: {
+        Q.pos.set(qp[0], qp[1], qp[2]);
+      } break;
+
       case JT_trans3: {
         Q.pos.set(qp);
       } break;
@@ -903,6 +907,12 @@ arr rai::Joint::calcDofsFromConfig() const {
       q(0)=Q.pos.x;
       q(1)=Q.pos.y;
     } break;
+    case JT_transXYZ: {
+      q.resize(3);
+      q(0)=Q.pos.x;
+      q(1)=Q.pos.y;
+      q(2)=Q.pos.z;
+    } break;
     case JT_transXYPhi: {
       q.resize(3);
       q(0)=Q.pos.x;
@@ -999,6 +1009,13 @@ arr rai::Joint::getScrewMatrix() {
     if(mimic) NIY;
     arr R = X().rot.getArr();
     S[1] = R({0, 1});
+  } else if(type==JT_transXYZ){
+    // Translation along X, Y, Z axis
+    arr R = X().rot.getArr();
+    S(1, 0, {}) = R[0];  // Translation along X in local coordinates
+    S(1, 1, {}) = R[1];  // Translation along Y in local coordinates
+    S(1, 2, {}) = R[2];  // Translation along Z in local coordinates
+  
   } else if(type==JT_transXYPhi) {
     if(mimic) NIY;
     arr R = X().rot.getArr();
@@ -1043,6 +1060,7 @@ arr rai::Joint::getScrewMatrix() {
 uint rai::Joint::getDimFromType() const {
   if(type>=JT_hingeX && type<=JT_transZ) return 1;
   if(type==JT_transXY) return 2;
+  if(type==JT_transXYZ) return 3;
   if(type==JT_transXYPhi) return 3;
   if(type==JT_transYPhi) return 2;
   if(type==JT_phiTransXY) return 3;
